@@ -3,11 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as config from '../configurations';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+  itemValue = new Subject<string>();
+
   constructor(private http: HttpClient, private _router: Router) {}
 
   signUp(signUpObj: any): Observable<any> {
@@ -38,6 +41,7 @@ export class UserService {
 
   signOut() {
     localStorage.removeItem(config.AUTH_TOKEN);
+    this.itemValue.next("");
     this._router.navigate(['/login']);
   }
 
@@ -72,6 +76,7 @@ export class UserService {
   saveUser(token: string, id: string): void {
     localStorage.setItem(config.AUTH_TOKEN, token);
     localStorage.setItem(config.USER_ID, id);
+    this.itemValue.next(token);
   }
 
   verifyEmail(verifyEmailObj: any): Observable<any> {

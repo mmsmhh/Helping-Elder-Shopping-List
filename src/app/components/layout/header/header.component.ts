@@ -12,12 +12,9 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  isUserLoggedin: boolean;
+
   onLogOutClicked(): void {
     this._userService.signOut();
-  }
-
-  isLoggedIn()
-  {
-    return this._userService.isLoggedIn();
   }
 }

@@ -102,7 +102,7 @@ export class ShoppingListsComponent implements OnInit {
     this.updateSubArray();
 
     this._shoppingListService.deleteShoppingList(id).subscribe((res) => {
-      this.toastr.success('Done', 'Shopping list deleted succesfully');
+      this.toastr.success('Shopping list deleted succesfully!');
 
     },
       (err) => {
@@ -112,9 +112,9 @@ export class ShoppingListsComponent implements OnInit {
 
   addShoppingList(shoppingList: any) {
     this._shoppingListService.create(shoppingList).subscribe((res) => {
-      this.shoppingLists.push(res.data.shoppingList);
+      this.shoppingLists.unshift(res.data.shoppingList);
       this.updateSubArray();
-      this.toastr.success('Done', 'Shopping list added succesfully');
+      this.toastr.success('Shopping list created succesfully!');
     },
     (err) => {
       this.toastr.error(err.error.msg);
@@ -130,7 +130,7 @@ export class ShoppingListsComponent implements OnInit {
         }
       }
       this.updateSubArray();
-      this.toastr.success('Done', 'Shopping list assigned succesfully');
+      this.toastr.success('You have successfully volunteered!');
     },
     (err) => {
       this.toastr.error(err.error.msg);
@@ -150,7 +150,7 @@ export class ShoppingListsComponent implements OnInit {
         }
       }
       this.updateSubArray();
-      this.toastr.success('Done', 'Shopping list unassigned succesfully');
+      this.toastr.success('You have successfully revoked volunteering!');
     },
     (err) => {
       this.toastr.error(err.error.msg);

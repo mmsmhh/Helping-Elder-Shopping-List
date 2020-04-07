@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
       (resp) => {
         this._userService.saveUser(resp.data.token, resp.data.id);
         this.toastr.success('User logged in successfully');
-        this._router.navigate(['/']);
+        window.location.href = '/';
       },
       (err) => {
         this.toastr.error(err.error.msg);

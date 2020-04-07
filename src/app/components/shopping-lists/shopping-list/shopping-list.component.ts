@@ -3,6 +3,7 @@ import {
   faTrash,
   faPlus,
   faShoppingCart,
+  faEraser
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -23,6 +24,7 @@ export class ShoppingListComponent implements OnInit {
   faTrash = faTrash;
   faPlus = faPlus;
   faShoppingCart = faShoppingCart;
+  faEraser = faEraser;
 
   ngOnInit(): void {}
 

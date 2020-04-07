@@ -71,18 +71,18 @@ export class AddShoppingListComponent implements OnInit {
     for (let i = 0; i < this.shoppingList.get('items').value.length; i++) {
       let element = this.shoppingList.get('items').value[i];
       if (element.itemName.length < 1) {
-        this.toastr.error('Validation error!', "Item name can't be empty");
+        this.toastr.error("Item name can't be empty");
         return;
       }
 
       if (element.quantity.length < 1) {
-        this.toastr.error('Validation error!', "Quantity can't be empty");
+        this.toastr.error("Quantity can't be empty");
         return;
       }
     }
 
     if (this.shoppingList.get('notes').value.length < 1) {
-      this.toastr.error('Validation error!', "Notes can't be empty");
+      this.toastr.error("Notes can't be empty");
       return;
     }
 

@@ -31,22 +31,22 @@
             <div class="row mt-3">
                 <div class="col-12" *ngIf="!shoppingList?.volunteer && shoppingList?.owner._id != userId">
                     <button (click)="onBuy(shoppingList?._id)" class="btn btn-primary btn-block">
-                        Help buying this list <fa-icon [icon]="faShoppingCart"></fa-icon>
+                        volunteer <fa-icon [icon]="faShoppingCart"></fa-icon>
                     </button>
                 </div>
                 <div class="col-12 text-center" *ngIf="!shoppingList?.volunteer && shoppingList?.owner._id == userId">
-                    No one has clicked to help you
+                    No one has volunteered yet
                 </div>
                 <div class="col-12 text-center"
                     *ngIf="shoppingList?.volunteer && shoppingList?.volunteer?._id != userId">
                     <a routerLink="/profile/{{shoppingList?.volunteer?._id}}">
                         {{shoppingList.volunteer.name.firstName}} {{shoppingList.volunteer.name.lastName}}
                     </a>
-                    will buy this shopping list for you
+                    volunteered
                 </div>
                 <div class="col-12" *ngIf="shoppingList?.volunteer && shoppingList?.volunteer?._id == userId">
                     <button (click)="onUnBuy(shoppingList?._id)" class="btn btn-danger btn-block">
-                        Can't help buying this list <fa-icon [icon]="faShoppingCart"></fa-icon>
+                        revoke volunteering <fa-icon [icon]="faEraser"></fa-icon>
                     </button>
                 </div>
             </div>
