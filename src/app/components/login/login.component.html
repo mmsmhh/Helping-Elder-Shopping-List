@@ -1,0 +1,33 @@
+<div class="container m-auto" style="width: 45%;">
+    <form (submit)="onSubmit()">
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label for="inputEmail">Email</label>
+                <input type="email" class="form-control" id="inputEmail" [(ngModel)]="email" name="email"
+                    placeholder="Email">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="inputPassword" [(ngModel)]="password" name="password"
+                    placeholder="Password">
+                <a [routerLink]="['/forget-password']">Forget password?</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </div>
+            <div class="col-2">
+                <h4 class="pt-2">Or</h4>
+            </div>
+            <div class="col-5">
+                <button [routerLink]="['/register']" class="btn btn-primary">Sign Up</button>
+            </div>
+
+        </div>
+
+    </form>
+</div>

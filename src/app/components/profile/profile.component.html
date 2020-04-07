@@ -1,0 +1,28 @@
+<div class="card text-center">
+    <div class="card-header">
+        {{user?.name?.firstName}} {{user?.name?.lastName}}
+    </div>
+    <div class="card-body">
+        <img src="https://cyyann.s3.amazonaws.com/{{user?.photo}}" width="120px" class="mt-3 mb-3"
+            style="border-radius: 50%;" alt="Profile Image">
+        <p class="card-text">Email: {{user?.email?.value}}</p>
+        <p class="card-text">Gender: {{user?.gender}}</p>
+        <p class="card-text">Birthdate: {{user?.birthdate | date}}</p>
+        <a href="#" class="btn btn-primary">Edit profile</a>
+    </div>
+    <div class="card-footer text-muted">
+        Joined {{user?.createdAt | date}}
+    </div>
+</div>
+<div class="row mt-3 mb-3" *ngIf="user?._id">
+    <div class="col">
+        <tabset type="pills" [justified]="true">
+            <tab heading="My shopping lists">
+                <app-shopping-lists [id]="user?._id" [type]='typeOwner'></app-shopping-lists>
+            </tab>
+            <tab heading="Shopping lists to buy">
+                <app-shopping-lists [id]="user?._id" [type]='typeVolunteer'></app-shopping-lists>
+            </tab>
+        </tabset>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<nav ngxNavbarDynamicExpand class="navbar navbar-dark bg-dark">
+  <a class="navbar-brand" [routerLink]="['/']">Helping Elder</a>
+
+  <button class="navbar-toggler" type="button" (click)="collapse.toggle()" aria-controls="main-nav"
+    aria-expanded="false" aria-label="Navigáció kapcsoló">
+    <span class="navbar-toggler-icon d-flex align-items-center justify-content-center">
+    </span>
+  </button>
+  <ngx-navbar-collapse id="main-nav" #collapse="ngxNavbarCollapse">
+    <ul class="navbar-nav mr-auto" *ngIf="isLoggedIn()">
+      <li class="nav-item active">
+        <a class="nav-link" [routerLink]="['/']" [routerLinkActive]="['active']"
+          [routerLinkActiveOptions]="{exact: true}">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/profile']" [routerLinkActive]="['active']">Profile</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn()">
+      <li class="nav-item">
+        <a class="nav-link" (click)="onLogOutClicked()" [routerLink]="['/']" [routerLinkActive]="['active']">LogOut</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav mr-auto" *ngIf="!isLoggedIn()">
+      <li class="nav-item active">
+        <a class="nav-link" [routerLink]="['/login']" [routerLinkActive]="['active']">SignIn<span
+            class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/register']" [routerLinkActive]="['active']">SignUp</a>
+      </li>
+    </ul>
+  </ngx-navbar-collapse>
+</nav>

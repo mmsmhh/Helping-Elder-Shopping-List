@@ -1,0 +1,53 @@
+
+<button type="button" class="btn btn-primary" (click)="openModal(template)">New shopping list</button>
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add shopping list</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="max-height: 400px; overflow-y: scroll;">
+    <form [formGroup]="shoppingList" (submit)="onSubmit()">
+      <ng-container formArrayName="items" *ngFor="let _ of items.controls; index as i">
+        <ng-container [formGroupName]="i">
+          <div class="form-row">
+            <div class="form-group col-md-5">
+              <label for="inputItemName">Item Name</label>
+              <input type="text" formControlName="itemName" class="form-control" id="inputItemName"
+                placeholder="Item name">
+            </div>
+            <div class="form-group col-md-5">
+              <label for="inputQuantity">Quantity</label>
+              <input type="number" formControlName="quantity" class="form-control" id="inputQuantity"
+                placeholder="Quantity">
+            </div>
+            <div class="form-group col-md-1" style="margin-top: 2rem; padding-left: 0;">
+              <button (click)="deleteRow(i)" class="btn btn-danger">
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+            </div>
+            <div class="form-group col-md-1" style="margin-top: 2rem;">
+              <button *ngIf="items.controls.length - 1 == i" type="button" (click)="addNewRow()"
+                class="btn btn-primary">
+                <fa-icon [icon]="faPlus"></fa-icon>
+              </button>
+            </div>
+          </div>
+
+        </ng-container>
+      </ng-container>
+
+      <div class="form-group">
+        <label for="inputNotes">Notes</label>
+        <textarea type="text" class="form-control" id="inputNotes" placeholder="Notes" formControlName="notes">
+          </textarea>
+      </div>
+
+      <button type="submit" class="btn btn-success btn-lg btn-block">Add</button>
+
+    </form>
+  </div>
+</ng-template>
