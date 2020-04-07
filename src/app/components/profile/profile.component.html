@@ -1,28 +1,200 @@
-<div class="card text-center">
-    <div class="card-header">
-        {{user?.name?.firstName}} {{user?.name?.lastName}}
+<ng-container *ngIf="loaded">
+    <div class="card text-center">
+        <div class="card-header">
+            {{user?.name?.firstName}} {{user?.name?.lastName}}
+        </div>
+        <div class="card-body">
+            <img src="https://cyyann.s3.amazonaws.com/{{user?.photo}}" width="120px" class="mt-3 mb-3"
+                style="border-radius: 50%;" alt="Profile Image">
+            <p class="card-text">Email: {{user?.email?.value}}</p>
+            <p class="card-text">Gender: {{user?.gender}}</p>
+            <p class="card-text">Birthdate: {{user?.birthdate | date}}</p>
+            <p class="card-text" *ngIf="user?.address">Address: {{user?.address.country}}, {{user?.address.city}},
+                {{user?.address.district}}, {{user?.address.streetName}},
+                {{user?.address.buildingNumber}}, {{user?.address.floor}}, {{user?.address.apartmentNumber}}
+            </p>
+            <button (click)="openModal(updateProfile)" class="btn btn-primary mr-2">Edit profile</button>
+            <!-- <button (click)="openModal(addPhoneNumber)" *ngIf="!user?.phoneNumber" class="btn btn-primary mr-2">Add
+                phone
+                number</button> -->
+
+            <!-- <button (click)="openModal(verifyPhoneNumber)" *ngIf=" user?.phoneNumber && !user?.phoneNumber?.isVerified"
+                class="btn btn-success mr-2">Confirm
+                phone number</button> -->
+
+            <button (click)="openModal(updatePassword)" class="btn btn-primary mr-2">Update password</button>
+        </div>
+        <div class="card-footer text-muted">
+            Joined {{user?.createdAt | date}}
+        </div>
     </div>
-    <div class="card-body">
-        <img src="https://cyyann.s3.amazonaws.com/{{user?.photo}}" width="120px" class="mt-3 mb-3"
-            style="border-radius: 50%;" alt="Profile Image">
-        <p class="card-text">Email: {{user?.email?.value}}</p>
-        <p class="card-text">Gender: {{user?.gender}}</p>
-        <p class="card-text">Birthdate: {{user?.birthdate | date}}</p>
-        <a href="#" class="btn btn-primary">Edit profile</a>
+    <div class="row mt-3 mb-3" *ngIf="user?._id">
+        <div class="col">
+            <tabset type="pills" [justified]="true">
+                <tab heading="My shopping lists">
+                    <app-shopping-lists [id]="user?._id" [type]='typeOwner'></app-shopping-lists>
+                </tab>
+                <tab heading="Shopping lists to buy">
+                    <app-shopping-lists [id]="user?._id" [type]='typeVolunteer'></app-shopping-lists>
+                </tab>
+            </tabset>
+        </div>
     </div>
-    <div class="card-footer text-muted">
-        Joined {{user?.createdAt | date}}
+</ng-container>
+
+
+
+<ng-template #updateProfile>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Update profile</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-</div>
-<div class="row mt-3 mb-3" *ngIf="user?._id">
-    <div class="col">
-        <tabset type="pills" [justified]="true">
-            <tab heading="My shopping lists">
-                <app-shopping-lists [id]="user?._id" [type]='typeOwner'></app-shopping-lists>
-            </tab>
-            <tab heading="Shopping lists to buy">
-                <app-shopping-lists [id]="user?._id" [type]='typeVolunteer'></app-shopping-lists>
-            </tab>
-        </tabset>
+    <div class="modal-body" style="max-height: 400px; overflow-y: scroll;">
+        <form (submit)="updateUserProfile()">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputFirstName">First name</label>
+                    <input type="text" class="form-control" id="inputFirstName" [(ngModel)]="user.name.firstName"
+                        name="firstName" placeholder="First name" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputLastName">Last name</label>
+                    <input type="text" class="form-control" id="inputLastName" [(ngModel)]="user.name.lastName"
+                        name="lastName" placeholder="Last name" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputGender">Gender</label>
+                    <select id="inputGender" [(ngModel)]="user.gender" name="gender" class="form-control" required>
+                        <option selected value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputBirthdate">Birthdate</label>
+                    <input type="date" class="form-control" id="inputBirthdate" [(ngModel)]="user.birthdate"
+                        name="birthdate" placeholder="birthdate" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputCountry">Country</label>
+                    <input type="text" class="form-control" id="inputCountry" name="country"
+                        [(ngModel)]="user.address.country">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputCity">City</label>
+                    <input type="text" class="form-control" id="inputCity" name="city" [(ngModel)]="user.address.city">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputDistrict">District</label>
+                    <input type="text" class="form-control" id="inputDistrict" name="district"
+                        [(ngModel)]="user.address.district">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputStreetName">Street Name</label>
+                    <input type="text" class="form-control" id="inputStreetName" name="streetName"
+                        [(ngModel)]="user.address.streetName">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="inputBuildingNumber">Building Number</label>
+                    <input type="text" class="form-control" id="inputBuildingNumber" name="buildingNumber"
+                        [(ngModel)]="user.address.buildingNumber">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputFloor">Floor</label>
+                    <input type="text" class="form-control" id="inputFloor" [(ngModel)]="user.address.floor"
+                        name="floor">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputApartmentNumber">Apartment Number</label>
+                    <input type="text" class="form-control" id="inputApartmentNumber" name="apartmentNumber"
+                        [(ngModel)]="user.address.apartmentNumber">
+                </div>
+
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
     </div>
-</div>
+</ng-template>
+
+<ng-template #updatePassword>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Update password</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" style="max-height: 400px; overflow-y: scroll;">
+        <form (submit)="updateUserPassword()">
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="inputOldPassword">Old password</label>
+                    <input type="password" class="form-control" id="inputOldPassword" [(ngModel)]="oldPassword"
+                        name="oldPassword" placeholder="Old password" required>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="inputPassword">New password</label>
+                    <input type="password" class="form-control" id="inputPassword" [(ngModel)]="newPassword"
+                        name="password" placeholder="New password" required>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="inputConfirmPassword">Confirm new password</label>
+                    <input type="password" class="form-control" id="inputConfirmPassword"
+                        [(ngModel)]="confirmNewPassword" name="confirmPassword" placeholder="Confirm New password"
+                        required>
+                </div>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+    </div>
+</ng-template>
+
+
+<!-- <ng-template #addPhoneNumber>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add phone number</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" style="max-height: 400px; overflow-y: scroll;">
+        <form action="">
+
+        </form>
+    </div>
+</ng-template> -->
+
+
+
+<!-- <ng-template #verifyPhoneNumber>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add phone number</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" style="max-height: 400px; overflow-y: scroll;">
+        <form (submit)="verifyUserPhoneNumber()">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputPhoneNumberVerificationToken">Phone number verification code</label>
+                    <input type="number" class="form-control" id="inputPhoneNumberVerificationToken"
+                        [(ngModel)]="phoneNumberVerificationToken" name="phoneNumberVerificationToken"
+                        placeholder="Phone number verification code" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+    </div>
+</ng-template> -->

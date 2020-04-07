@@ -38,22 +38,7 @@ const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
     canActivate: [UnauthenticatedGuard],
-  },
-  {
-    path: 'forget-password',
-    component: ForgetPasswordComponent,
-    canActivate: [UnauthenticatedGuard],
-  },
-  {
-    path: 'reset-password',
-    component: ResetPasswordComponent,
-    canActivate: [UnauthenticatedGuard],
-  },
-  {
-    path: 'verify-email/:token',
-    component: VerifyEmailComponent,
-    canActivate: [UnauthenticatedGuard],
-  },
+  }
 ];
 
 @NgModule({

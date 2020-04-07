@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-verify-email',
@@ -12,7 +13,8 @@ export class VerifyEmailComponent implements OnInit {
   constructor(
     private _userService: UserService,
     private _router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastr: ToastrService
   ) {}
 
   emailVerificationToken: string;
@@ -24,12 +26,17 @@ export class VerifyEmailComponent implements OnInit {
 
     this._userService
       .verifyEmail({ emailVerificationToken: this.emailVerificationToken })
-      .subscribe((resp) => {
-        if (!resp.success) {
-          // this._flash.show(resp.message, { cssClass: 'alert-danger' });
-          return false;
+      .subscribe(
+        (resp) => {
+          if (!resp.success) {
+            // this._flash.show(resp.message, { cssClass: 'alert-danger' });
+            return false;
+          }
+          this._router.navigate(['/']);
+        },
+        (err) => {
+          this.toastr.error(err.error.msg);
         }
-        this._router.navigate(['/']);
-      });
+      );
   }
 }

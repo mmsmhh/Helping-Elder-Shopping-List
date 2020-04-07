@@ -1,5 +1,9 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTrash,
+  faPlus,
+  faShoppingCart,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-shopping-list',
@@ -9,15 +13,28 @@ import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 export class ShoppingListComponent implements OnInit {
   @Input() shoppingList: any;
   @Input() userId: any;
+
   @Output() deleteShoppingList: EventEmitter<any> = new EventEmitter();
+  @Output() buyShoppingList: EventEmitter<any> = new EventEmitter();
+  @Output() unBuyShoppingList: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
+  
   faTrash = faTrash;
   faPlus = faPlus;
-  ngOnInit(): void {
-  }
+  faShoppingCart = faShoppingCart;
+
+  ngOnInit(): void {}
 
   onDelete(id) {
     this.deleteShoppingList.emit(id);
+  }
+
+  onBuy(id) {
+    this.buyShoppingList.emit(id);
+  }
+
+  onUnBuy(id) {
+    this.unBuyShoppingList.emit(id);
   }
 }

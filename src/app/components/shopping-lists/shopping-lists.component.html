@@ -1,21 +1,25 @@
-<div class="row" *ngIf="!type">
-    <div class="col">
-        <app-add-shopping-list (addShoppingList)="addShoppingList($event)"></app-add-shopping-list>
+<ng-container *ngIf="loaded">
+    <div class="row mt-3" *ngIf="!type">
+        <div class="col">
+            <app-add-shopping-list (addShoppingList)="addShoppingList($event)"></app-add-shopping-list>
+        </div>
     </div>
-</div>
 
-<div class="row mt-3">
-    <app-shopping-list *ngFor="let shoppingList of currentShoppingLists" [shoppingList]="shoppingList" [userId]="userId"
-        (deleteShoppingList)="deleteShoppingList($event)"> </app-shopping-list>
-    <div class="col mt-5" *ngIf="currentShoppingLists?.length == 0">
-        <h4 class="d-flex justify-content-center">No shopping lists avilable</h4>
+    <div class="row mt-3">
+        <app-shopping-list *ngFor="let shoppingList of currentShoppingLists" [shoppingList]="shoppingList"
+            [userId]="userId" (deleteShoppingList)="deleteShoppingList($event)"
+            (buyShoppingList)="buyShoppingList($event)" (unBuyShoppingList)="unBuyShoppingList($event)">
+        </app-shopping-list>
+        <div class="col mt-5" *ngIf="currentShoppingLists?.length == 0">
+            <h4 class="d-flex justify-content-center">No shopping lists avilable</h4>
+        </div>
     </div>
-</div>
 
-<div class="row mt-5">
-    <div class="col">
-        <pagination class="d-flex justify-content-center" [totalItems]="shoppingLists?.length" [itemsPerPage]="3"
-            (pageChanged)="pageChanged($event)">
-        </pagination>
+    <div class="row mt-5">
+        <div class="col">
+            <pagination class="d-flex justify-content-center" [totalItems]="shoppingLists?.length" [itemsPerPage]="3"
+                (pageChanged)="pageChanged($event)">
+            </pagination>
+        </div>
     </div>
-</div>
+</ng-container>

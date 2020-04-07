@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -15,13 +16,47 @@ export class RegisterComponent implements OnInit {
   birthdate: Date;
   gender: string;
 
-  constructor(private _userService: UserService, private _router: Router) {}
+  constructor(
+    private _userService: UserService,
+    private _router: Router,
+    private toastr: ToastrService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.gender = 'Male';
+  }
 
   onSubmit() {
-    if (!this.email || !this.password) {
-      // this._flash.show('All fields are required', { cssClass: 'alert-danger'});
+    if (!this.firstName) {
+      this.toastr.error("First name can't be empty");
+      return false;
+    }
+    if (!this.lastName) {
+      this.toastr.error("Last name can't be empty");
+      return false;
+    }
+    if (!this.email) {
+      this.toastr.error("Email can't be empty");
+      return false;
+    }
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
+      this.toastr.error('Please write correct email');
+      return false;
+    }
+    if (!this.password) {
+      this.toastr.error("Password can't be empty");
+      return false;
+    }
+    if (this.password.length < 8) {
+      this.toastr.error("Password can't be less than 8 char");
+      return false;
+    }
+    if (!this.gender) {
+      this.toastr.error("Gender can't be empty");
+      return false;
+    }
+    if (!this.birthdate) {
+      this.toastr.error("Birthdate can't be empty");
       return false;
     }
 
@@ -36,13 +71,13 @@ export class RegisterComponent implements OnInit {
       gender: this.gender,
     };
 
+    this._userService.signUp(user).subscribe((res) => {
+      this.toastr.success('User created successfully');
 
-    this._userService.signUp(user).subscribe((resp) => {
-      if (!resp.success) {
-        // this._flash.show(resp.message, { cssClass: 'alert-danger' });
-        return false;
-      }
-      this._router.navigate(['/']);
+      this._router.navigate(['/login']);
+    },
+    (err) => {
+      this.toastr.error(err.error.msg);
     });
   }
 }

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as config from '../configurations';
-// import { User } from '../models/User';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -11,22 +10,30 @@ import { Router } from '@angular/router';
 export class UserService {
   constructor(private http: HttpClient, private _router: Router) {}
 
-  signUp(user: any): Observable<any> {
+  signUp(signUpObj: any): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
     };
-    return this.http.post<any>(`${config.URL}/user/sign-up`, user, httpOptions);
+    return this.http.post<any>(
+      `${config.URL}/user/sign-up`,
+      signUpObj,
+      httpOptions
+    );
   }
 
-  signIn(user: any): Observable<any> {
+  signIn(signInObj: any): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
     };
-    return this.http.post<any>(`${config.URL}/user/sign-in`, user, httpOptions);
+    return this.http.post<any>(
+      `${config.URL}/user/sign-in`,
+      signInObj,
+      httpOptions
+    );
   }
 
   signOut() {
@@ -67,7 +74,7 @@ export class UserService {
     localStorage.setItem(config.USER_ID, id);
   }
 
-  verifyEmail(token: any): Observable<any> {
+  verifyEmail(verifyEmailObj: any): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -75,7 +82,63 @@ export class UserService {
     };
     return this.http.post<any>(
       `${config.URL}/user/verify-email`,
-      token,
+      verifyEmailObj,
+      httpOptions
+    );
+  }
+
+  forgetPassword(forgetPasswordObj: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    return this.http.post<any>(
+      `${config.URL}/user/forget-password`,
+      forgetPasswordObj,
+      httpOptions
+    );
+  }
+
+  resetPassword(resetPasswordObj: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    return this.http.post<any>(
+      `${config.URL}/user/forget-password`,
+      resetPasswordObj,
+      httpOptions
+    );
+  }
+
+  updatePasswod(updatePasswordObj: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(config.AUTH_TOKEN),
+      }),
+    };
+
+    return this.http.patch<any>(
+      `${config.URL}/user/update-password`,
+      updatePasswordObj,
+      httpOptions
+    );
+  }
+
+  updateUser(updateUserObj: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(config.AUTH_TOKEN),
+      }),
+    };
+
+    return this.http.patch<any>(
+      `${config.URL}/user/update-profile`,
+      updateUserObj,
       httpOptions
     );
   }

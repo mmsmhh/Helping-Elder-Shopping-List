@@ -9,7 +9,7 @@ import * as config from '../configurations';
 export class ShoppingListService {
   constructor(private http: HttpClient) {}
 
-  create(shoppingList: any): Observable<any> {
+  create(createObj: any): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -18,7 +18,34 @@ export class ShoppingListService {
     };
     return this.http.post<any>(
       `${config.URL}/shopping-list/create`,
-      shoppingList,
+      createObj,
+      httpOptions
+    );
+  }
+
+  buy(id: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(config.AUTH_TOKEN),
+      }),
+    };
+
+    return this.http.get<any>(
+      `${config.URL}/shopping-list/buy/${id}`,
+      httpOptions
+    );
+  }
+
+  unBuy(id: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem(config.AUTH_TOKEN),
+      }),
+    };
+    return this.http.get<any>(
+      `${config.URL}/shopping-list/unBuy/${id}`,
       httpOptions
     );
   }
@@ -49,7 +76,6 @@ export class ShoppingListService {
       httpOptions
     );
   }
-
   getVolunteer(id: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({

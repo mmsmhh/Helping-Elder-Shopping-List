@@ -21,18 +21,16 @@ import { UserComponent } from './components/user/user.component';
 import { AddShoppingListComponent } from './components/shopping-lists/add-shopping-list/add-shopping-list.component';
 import { UserService } from './services/user.service';
 import { ShoppingListService } from './services/shopping-list.service';
-
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { UnauthenticatedGuard } from './guards/unauthenticated.guard';
-
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxNavbarModule } from 'ngx-bootstrap-navbar';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxSpinnerModule } from 'ngx-spinner';
-
 import { ToastrModule } from 'ngx-toastr';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -67,7 +65,6 @@ import { ToastrModule } from 'ngx-toastr';
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-bottom-right',
-      preventDuplicates: true,
     }),
   ],
   providers: [
@@ -75,6 +72,7 @@ import { ToastrModule } from 'ngx-toastr';
     ShoppingListService,
     AuthenticatedGuard,
     UnauthenticatedGuard,
+    DatePipe,
   ],
   bootstrap: [AppComponent],
 })

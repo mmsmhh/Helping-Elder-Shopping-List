@@ -8,6 +8,7 @@ import {
 import { FormArray, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-shopping-list',
@@ -15,10 +16,13 @@ import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./add-shopping-list.component.css'],
 })
 export class AddShoppingListComponent implements OnInit {
+  constructor(
+    private modalService: BsModalService,
+    private toastr: ToastrService
+  ) {}
+
   faTrash = faTrash;
   faPlus = faPlus;
-  constructor(private modalService: BsModalService, private _fb: FormBuilder) {}
-
   itemName: string;
   quantity: string;
   notes: string;
@@ -26,21 +30,13 @@ export class AddShoppingListComponent implements OnInit {
   items: FormArray;
   shoppingList: FormGroup;
 
-  ngOnInit() {
-    this.shoppingList = new FormGroup({
-      notes: new FormControl(''),
-      items: new FormArray([
-        new FormGroup({
-          itemName: new FormControl(''),
-          quantity: new FormControl(''),
-        }),
-      ]),
-    });
+  @Output() addShoppingList: EventEmitter<any> = new EventEmitter();
 
-    this.items = this.shoppingList.get('items') as FormArray;
+  ngOnInit() {
+    this.initForm();
   }
 
-  resetForm() {
+  initForm() {
     this.shoppingList = new FormGroup({
       notes: new FormControl(''),
       items: new FormArray([
@@ -67,24 +63,37 @@ export class AddShoppingListComponent implements OnInit {
     this.items.removeAt(index);
   }
 
-  @Output() addShoppingList: EventEmitter<any> = new EventEmitter();
-
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
 
   onSubmit() {
-    console.log(this.shoppingList.get('notes').value);
+    for (let i = 0; i < this.shoppingList.get('items').value.length; i++) {
+      let element = this.shoppingList.get('items').value[i];
+      if (element.itemName.length < 1) {
+        this.toastr.error('Validation error!', "Item name can't be empty");
+        return;
+      }
+
+      if (element.quantity.length < 1) {
+        this.toastr.error('Validation error!', "Quantity can't be empty");
+        return;
+      }
+    }
+
+    if (this.shoppingList.get('notes').value.length < 1) {
+      this.toastr.error('Validation error!', "Notes can't be empty");
+      return;
+    }
+
     const shoppingList = {
       items: this.shoppingList.get('items').value,
-      notes: this.shoppingList.get('notes').value
-        ? this.shoppingList.get('notes').value
-        : 'Thank you',
+      notes: this.shoppingList.get('notes').value,
     };
 
     this.modalRef.hide();
 
-    this.resetForm();
+    this.initForm();
 
     this.addShoppingList.emit(shoppingList);
   }
